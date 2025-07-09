@@ -2,6 +2,8 @@ package com.sorianog.pokeviewer.di
 
 import com.sorianog.pokeviewer.data.AppConstants
 import com.sorianog.pokeviewer.data.api.PokemonApiService
+import com.sorianog.pokeviewer.data.datasource.PokemonDataSource
+import com.sorianog.pokeviewer.data.datasource.PokemonDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +29,13 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesApiService(retrofit: Retrofit) : PokemonApiService {
+    fun providesApiService(retrofit: Retrofit): PokemonApiService {
         return retrofit.create(PokemonApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPokemonDataSource(apiService: PokemonApiService): PokemonDataSource {
+        return PokemonDataSourceImpl(apiService)
     }
 }
