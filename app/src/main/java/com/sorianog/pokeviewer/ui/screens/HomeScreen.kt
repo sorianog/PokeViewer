@@ -3,8 +3,13 @@ package com.sorianog.pokeviewer.ui.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sorianog.pokeviewer.R
 import com.sorianog.pokeviewer.data.api.ApiState
+import com.sorianog.pokeviewer.ui.components.EmptyStateUI
+import com.sorianog.pokeviewer.ui.components.LoadingIndicator
 import com.sorianog.pokeviewer.ui.components.PokeList
 import com.sorianog.pokeviewer.ui.viewmodels.PokeListViewModel
 
@@ -17,23 +22,28 @@ fun HomeScreen(
 
     when (pokemonDataState) {
         is ApiState.Loading<*> -> {
-            // Display loading component
+            LoadingIndicator()
         }
 
         is ApiState.Success<*> -> {
             val pokemonData = (pokemonDataState as ApiState.Success).data
             if (pokemonData.results.isNotEmpty()) {
-                println("### pokemon: ${pokemonData.results}")
                 PokeList(pokemonData.results)
             } else {
-                // Display empty message
+                EmptyStateUI(
+                    image = painterResource(R.drawable.ic_info),
+                    message = stringResource(R.string.no_pokemon)
+                )
             }
         }
 
         is ApiState.Error<*> -> {
             // Display error component
             val error = (pokemonDataState as ApiState.Error).error
-            println("### error: $error")
+            EmptyStateUI(
+                image = painterResource(R.drawable.ic_error),
+                message = error.toString()
+            )
         }
     }
 }

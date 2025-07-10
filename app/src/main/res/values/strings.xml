@@ -2,4 +2,5 @@
     <string name="app_name">PokeViewer</string>
     <string name="entry_num">#%1$s</string>
     <string name="no_name">No Name</string>
+    <string name="no_pokemon">There are no Pokemon to show</string>
 </resources>
