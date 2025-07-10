@@ -38,7 +38,6 @@ fun HomeScreen(
         }
 
         is ApiState.Error<*> -> {
-            // Display error component
             val error = (pokemonDataState as ApiState.Error).error
             EmptyStateUI(
                 image = painterResource(R.drawable.ic_error),

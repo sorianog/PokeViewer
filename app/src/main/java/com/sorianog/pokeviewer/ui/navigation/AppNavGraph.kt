@@ -1,15 +1,16 @@
 package com.sorianog.pokeviewer.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.sorianog.pokeviewer.ui.screens.DetailScreen
 import com.sorianog.pokeviewer.ui.screens.HomeScreen
 
 @Composable
-fun AppNavGraph() {
-    val navController = rememberNavController()
+fun AppNavGraph(
+    navController: NavHostController
+) {
 
     NavHost(navController = navController, startDestination = AppRoutes.HOME_SCREEN) {
 
