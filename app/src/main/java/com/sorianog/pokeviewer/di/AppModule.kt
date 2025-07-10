@@ -1,6 +1,7 @@
 package com.sorianog.pokeviewer.di
 
 import com.sorianog.pokeviewer.data.AppConstants
+import com.sorianog.pokeviewer.data.PokemonRepository
 import com.sorianog.pokeviewer.data.api.PokemonApiService
 import com.sorianog.pokeviewer.data.datasource.PokemonDataSource
 import com.sorianog.pokeviewer.data.datasource.PokemonDataSourceImpl
@@ -37,5 +38,11 @@ class AppModule {
     @Singleton
     fun providesPokemonDataSource(apiService: PokemonApiService): PokemonDataSource {
         return PokemonDataSourceImpl(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPokemonRepository(pokemonDataSource: PokemonDataSource): PokemonRepository {
+        return PokemonRepository(pokemonDataSource)
     }
 }
