@@ -26,11 +26,11 @@ fun PokeListItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        modifier = modifier.fillMaxWidth().padding(bottom = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
-            modifier = modifier.padding(10.dp)
+            modifier = modifier.padding(20.dp)
         ) {
             Text(
                 modifier = modifier
