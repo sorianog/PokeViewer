@@ -1,9 +1,7 @@
 package com.sorianog.pokeviewer.ui.screens
 
-import android.R.attr.name
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,14 +26,16 @@ fun DetailScreen(
         }
     }
 
-    when(pokemonDetail) {
+    when (pokemonDetail) {
         is ApiState.Loading<*> -> {
             LoadingIndicator()
         }
+
         is ApiState.Success<*> -> {
             val detail = (pokemonDetail as ApiState.Success).data
             PokeDetailView(detail)
         }
+
         is ApiState.Error<*> -> {
             val error = (pokemonDetail as ApiState.Error).error
             EmptyStateUI(

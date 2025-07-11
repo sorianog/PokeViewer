@@ -14,11 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.rememberNavController
 import com.sorianog.pokeviewer.R
 import com.sorianog.pokeviewer.ui.navigation.AppNavGraph
@@ -36,11 +39,13 @@ class MainActivity : ComponentActivity() {
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { TopAppBar(scrollBehavior = scrollBehavior) }) { innerPadding ->
+                    topBar = { TopAppBar(scrollBehavior = scrollBehavior) },
+                ) { innerPadding ->
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(innerPadding)
+                            .padding(innerPadding),
+                        color = colorResource(R.color.poke_red)
                     ) {
                         AppNavGraph(navController)
                     }
@@ -59,8 +64,16 @@ fun TopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modi
             Text(
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
             )
         },
-        modifier = modifier
+        modifier = modifier,
+        colors = TopAppBarColors(
+            containerColor = colorResource(R.color.poke_dark_red),
+            scrolledContainerColor = colorResource(R.color.poke_dark_red),
+            navigationIconContentColor = colorResource(R.color.poke_dark_red),
+            titleContentColor = colorResource(R.color.poke_dark_yellow),
+            actionIconContentColor = colorResource(R.color.poke_dark_red)
+        )
     )
 }

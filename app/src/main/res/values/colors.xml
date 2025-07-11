@@ -8,4 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="app_green">#6DB634</color>
+    <color name="poke_red">#FF0000</color>
+    <color name="poke_dark_red">#CC0000</color>
+    <color name="poke_blue">#3B4CCA</color>
+    <color name="poke_yellow">#FFDE00</color>
+    <color name="poke_dark_yellow">#B3A125</color>
 </resources>
