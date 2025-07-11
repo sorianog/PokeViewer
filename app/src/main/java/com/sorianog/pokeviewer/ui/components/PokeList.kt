@@ -23,11 +23,13 @@ import com.sorianog.pokeviewer.data.entity.PokeResult
 @Composable
 fun PokeListItem(
     pokemon: PokeResult,
+    onPokemonClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.fillMaxWidth().padding(bottom = 4.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        onClick = { onPokemonClick(pokemon.name ?: "0") }
     ) {
         Row(
             modifier = modifier.padding(20.dp)
@@ -55,13 +57,14 @@ fun PokeListItem(
 
 @Composable
 fun PokeList(
-    pokemonList: List<PokeResult>
+    pokemonList: List<PokeResult>,
+    onPokemonClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(8.dp)
     ) {
         items(items = pokemonList, key = { pokemon -> pokemon.name.hashCode() }) { pokemon ->
-            PokeListItem(pokemon)
+            PokeListItem(pokemon, onPokemonClick)
         }
     }
 }
@@ -74,5 +77,5 @@ fun PokeListPreview() {
         PokeResult(name = "ivysaur"),
         PokeResult(name = "venusaur")
     )
-    PokeList(pokemonList)
+    PokeList(pokemonList) {}
 }

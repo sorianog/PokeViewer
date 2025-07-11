@@ -15,7 +15,8 @@ import com.sorianog.pokeviewer.ui.viewmodels.PokeListViewModel
 
 @Composable
 fun HomeScreen(
-    pokemonListViewModel: PokeListViewModel = hiltViewModel()
+    pokemonListViewModel: PokeListViewModel = hiltViewModel(),
+    onPokemonClick: (String) -> Unit
 ) {
 
     val pokemonDataState by pokemonListViewModel.pokemonState.collectAsState()
@@ -28,7 +29,7 @@ fun HomeScreen(
         is ApiState.Success<*> -> {
             val pokemonData = (pokemonDataState as ApiState.Success).data
             if (pokemonData.results.isNotEmpty()) {
-                PokeList(pokemonData.results)
+                PokeList(pokemonData.results, onPokemonClick)
             } else {
                 EmptyStateUI(
                     image = painterResource(R.drawable.ic_info),

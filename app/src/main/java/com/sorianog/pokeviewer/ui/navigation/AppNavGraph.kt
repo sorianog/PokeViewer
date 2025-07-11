@@ -15,11 +15,26 @@ fun AppNavGraph(
     NavHost(navController = navController, startDestination = AppRoutes.HOME_SCREEN) {
 
         composable(AppRoutes.HOME_SCREEN) {
-            HomeScreen()
+            HomeScreen(
+                onPokemonClick = { pokemonName ->
+                    navController.navigateToSinglePokemon(pokemonName)
+                }
+            )
         }
 
-        composable(AppRoutes.DETAIL_SCREEN) {
-            DetailScreen()
+        composable(
+            route = PokemonDetail.routeWithArgs,
+            arguments = PokemonDetail.arguments
+        ) { navBackStackEntry ->
+            val pokemonName = navBackStackEntry.arguments?.getString(PokemonDetail.pokemonNameArg)
+            DetailScreen(pokemonName = pokemonName)
         }
     }
+}
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) { launchSingleTop = true }
+
+private fun NavHostController.navigateToSinglePokemon(pokemonName: String) {
+    this.navigateSingleTopTo("${PokemonDetail.route}/$pokemonName")
 }
