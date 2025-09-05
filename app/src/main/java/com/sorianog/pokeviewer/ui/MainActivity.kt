@@ -8,8 +8,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -18,10 +22,15 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sorianog.pokeviewer.R
 import com.sorianog.pokeviewer.ui.navigation.AppNavGraph
@@ -37,9 +46,18 @@ class MainActivity : ComponentActivity() {
             PokeViewerTheme {
                 val navController = rememberNavController()
                 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+                val currentBackStackEntry by navController.currentBackStackEntryAsState()
+
+                val showBackButton by remember(currentBackStackEntry) {
+                    derivedStateOf {
+                        navController.previousBackStackEntry != null
+                    }
+                }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { TopAppBar(scrollBehavior = scrollBehavior) },
+                    topBar = {
+                        TopAppBar(navController, showBackButton, scrollBehavior)
+                    },
                 ) { innerPadding ->
                     Surface(
                         modifier = Modifier
@@ -57,7 +75,12 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier) {
+fun TopAppBar(
+    navController: NavController,
+    showBackButton: Boolean,
+    scrollBehavior: TopAppBarScrollBehavior,
+    modifier: Modifier = Modifier
+) {
     CenterAlignedTopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
@@ -71,9 +94,21 @@ fun TopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modi
         colors = TopAppBarColors(
             containerColor = colorResource(R.color.poke_dark_red),
             scrolledContainerColor = colorResource(R.color.poke_dark_red),
-            navigationIconContentColor = colorResource(R.color.poke_dark_red),
+            navigationIconContentColor = colorResource(R.color.poke_blue),
             titleContentColor = colorResource(R.color.poke_dark_yellow),
             actionIconContentColor = colorResource(R.color.poke_dark_red)
-        )
+        ),
+        navigationIcon = {
+            if (showBackButton) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            } else {
+                null
+            }
+        }
     )
 }
