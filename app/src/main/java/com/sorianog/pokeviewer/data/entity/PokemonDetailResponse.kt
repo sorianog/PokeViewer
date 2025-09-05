@@ -8,7 +8,8 @@ data class PokemonDetailResponse(
     var id: Int,
     var name: String,
     var types: List<PokeTypes>,
-    var sprites: PokeSprites
+    var sprites: PokeSprites,
+    var cries: PokeCries
 )
 
 @Serializable
@@ -29,5 +30,11 @@ data class PokeSprites(
     var backDefault: String,
     @SerialName("front_default")
     var frontDefault: String
+)
+
+@Serializable
+data class PokeCries(
+    var latest: String,
+    var legacy: String
 )
 

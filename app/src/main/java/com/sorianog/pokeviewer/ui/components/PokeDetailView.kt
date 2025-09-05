@@ -1,14 +1,20 @@
 package com.sorianog.pokeviewer.ui.components
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +29,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.sorianog.pokeviewer.R
+import com.sorianog.pokeviewer.data.entity.PokeCries
 import com.sorianog.pokeviewer.data.entity.PokeSprites
 import com.sorianog.pokeviewer.data.entity.PokeType
 import com.sorianog.pokeviewer.data.entity.PokeTypes
@@ -34,7 +41,8 @@ fun PokeDetailView(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PokeImages(
             pokemonDetail.sprites.frontDefault,
@@ -42,6 +50,11 @@ fun PokeDetailView(
         )
         PokemonNameLabel(nameText = pokemonDetail.name)
         PokemonTypesLabel(pokeTypes = pokemonDetail.types)
+        if (pokemonDetail.cries.latest.isNotEmpty()) {
+            PlayPokemonVoiceButton(voiceUri = pokemonDetail.cries.latest)
+        } else if (pokemonDetail.cries.legacy.isNotEmpty()) {
+            PlayPokemonVoiceButton(voiceUri = pokemonDetail.cries.legacy)
+        }
     }
 }
 
@@ -62,7 +75,12 @@ fun PokeDetailViewPreview() {
         sprites = PokeSprites(
             frontDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
             backDefault = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png"
-        )
+        ),
+        cries =
+            PokeCries(
+                latest = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/25.ogg",
+                legacy = "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/25.ogg"
+            )
     )
     PokeDetailView(pokemonDetail)
 }
@@ -133,4 +151,37 @@ fun PokemonTypesLabel(pokeTypes: List<PokeTypes>) {
         style = MaterialTheme.typography.bodyLarge,
         textAlign = TextAlign.Center
     )
+}
+
+@Composable
+fun PlayPokemonVoiceButton(voiceUri: String) {
+    Button(
+        modifier = Modifier
+            .wrapContentWidth()
+            .wrapContentHeight()
+            .padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(R.color.poke_blue)
+        ),
+        onClick = {
+            MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                setDataSource(voiceUri)
+                prepare()
+                start()
+            }
+        }
+    ) {
+        Text(
+            text = stringResource(R.string.play_voice),
+            color = colorResource(R.color.poke_yellow),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center
+        )
+    }
 }

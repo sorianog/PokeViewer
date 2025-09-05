@@ -4,4 +4,5 @@
     <string name="no_name">No Name</string>
     <string name="no_pokemon">There are no Pokemon to show</string>
     <string name="poke_types">Type(s): %1$s</string>
+    <string name="play_voice">Play Voice</string>
 </resources>
