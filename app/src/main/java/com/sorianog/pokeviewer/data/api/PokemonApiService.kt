@@ -2,6 +2,7 @@ package com.sorianog.pokeviewer.data.api
 
 import com.sorianog.pokeviewer.data.entity.AllPokemonResponse
 import com.sorianog.pokeviewer.data.entity.PokemonDetailResponse
+import com.sorianog.pokeviewer.data.entity.PokemonSpeciesResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,10 +14,15 @@ interface PokemonApiService {
     suspend fun getAllPokemon(
         @Query("limit") limit: Int = 151,
         @Query("offset") offset: Int = 0
-    ) : Response<AllPokemonResponse>
+    ): Response<AllPokemonResponse>
 
     @GET("pokemon/{name}")
     suspend fun getPokemonDetail(
         @Path("name") name: String
-    ) : Response<PokemonDetailResponse>
+    ): Response<PokemonDetailResponse>
+
+    @GET("pokemon-species/{name}")
+    suspend fun getPokemonSpecies(
+        @Path("name") name: String
+    ): Response<PokemonSpeciesResponse>
 }
