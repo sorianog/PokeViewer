@@ -5,6 +5,7 @@ import com.sorianog.pokeviewer.data.PokemonRepository
 import com.sorianog.pokeviewer.data.api.PokemonApiService
 import com.sorianog.pokeviewer.data.datasource.PokemonDataSource
 import com.sorianog.pokeviewer.data.datasource.PokemonDataSourceImpl
+import com.sorianog.pokeviewer.data.datasource.PokemonPagingSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,5 +47,11 @@ class AppModule {
     @Singleton
     fun providesPokemonRepository(pokemonDataSource: PokemonDataSource): PokemonRepository {
         return PokemonRepository(pokemonDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPokemonPagingSource(repository: PokemonRepository): PokemonPagingSource {
+        return PokemonPagingSource(repository)
     }
 }

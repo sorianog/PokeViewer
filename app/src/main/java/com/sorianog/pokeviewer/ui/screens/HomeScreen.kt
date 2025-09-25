@@ -6,11 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.sorianog.pokeviewer.R
 import com.sorianog.pokeviewer.data.api.ApiState
 import com.sorianog.pokeviewer.ui.components.EmptyStateUI
 import com.sorianog.pokeviewer.ui.components.LoadingIndicator
 import com.sorianog.pokeviewer.ui.components.PokeList
+import com.sorianog.pokeviewer.ui.components.PokePagedList
 import com.sorianog.pokeviewer.ui.viewmodels.PokeListViewModel
 
 @Composable
@@ -29,7 +31,8 @@ fun HomeScreen(
         is ApiState.Success<*> -> {
             val pokemonData = (pokemonDataState as ApiState.Success).data
             if (pokemonData.results.isNotEmpty()) {
-                PokeList(pokemonData.results, onPokemonClick)
+                // Uncomment to use static list
+//                PokeList(pokemonData.results, onPokemonClick)
             } else {
                 EmptyStateUI(
                     image = painterResource(R.drawable.ic_info),
@@ -46,4 +49,7 @@ fun HomeScreen(
             )
         }
     }
+
+    val pokemonPagedItems = pokemonListViewModel.getPokemonDataPager().collectAsLazyPagingItems()
+    PokePagedList(pokemonPagedItems, onPokemonClick)
 }

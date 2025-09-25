@@ -1,6 +1,5 @@
 package com.sorianog.pokeviewer.ui.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
 import com.sorianog.pokeviewer.R
 import com.sorianog.pokeviewer.data.entity.PokeResult
 
@@ -27,7 +27,9 @@ fun PokeListItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().padding(bottom = 4.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 4.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         onClick = { onPokemonClick(pokemon.name ?: "0") }
     ) {
@@ -55,6 +57,9 @@ fun PokeListItem(
     }
 }
 
+/*
+* Static List to show first 151 Pokemon
+* */
 @Composable
 fun PokeList(
     pokemonList: List<PokeResult>,
@@ -65,6 +70,22 @@ fun PokeList(
     ) {
         items(items = pokemonList, key = { pokemon -> pokemon.name.hashCode() }) { pokemon ->
             PokeListItem(pokemon, onPokemonClick)
+        }
+    }
+}
+
+@Composable
+fun PokePagedList(
+    pokemonList: LazyPagingItems<PokeResult>,
+    onPokemonClick: (String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.padding(8.dp)
+    ) {
+        items(count = pokemonList.itemCount) { index ->
+            pokemonList[index]?.let { pokemon ->
+                PokeListItem(pokemon, onPokemonClick)
+            }
         }
     }
 }

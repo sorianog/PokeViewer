@@ -6,7 +6,7 @@ Simple Android app to view a list of Pokemon, Built with modern tooling and prac
 <img src="demo/app-demo-2.png" width="200"></img>
 
 ## Architecture & Key Components
-- UI/UX: Jetpack Compose
+- UI/UX: [Jetpack Compose](https://developer.android.com/compose), [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
 - MVVM
 - Depedency Injection: [Hilt](https://dagger.dev/hilt/)
 - Repository Pattern

@@ -14,11 +14,11 @@ class PokemonRepository @Inject constructor(
     private val pokemonDataSource: PokemonDataSource
 ) {
 
-    fun getPokemon(): Flow<ApiState<AllPokemonResponse>> {
+    fun getPokemon(limit: Int = 151, offset: Int = 0): Flow<ApiState<AllPokemonResponse>> {
         return flow {
             emit(ApiState.Loading())
 
-            val response = pokemonDataSource.getPokemon()
+            val response = pokemonDataSource.getPokemon(limit, offset)
 
             if (response.isSuccessful && response.body() != null) {
                 emit(ApiState.Success(response.body()!!))

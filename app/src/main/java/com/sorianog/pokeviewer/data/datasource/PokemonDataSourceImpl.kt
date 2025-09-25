@@ -11,8 +11,8 @@ class PokemonDataSourceImpl @Inject constructor(
     private val apiService: PokemonApiService
 ) : PokemonDataSource {
 
-    override suspend fun getPokemon(): Response<AllPokemonResponse> {
-        return apiService.getAllPokemon()
+    override suspend fun getPokemon(limit: Int, offset: Int): Response<AllPokemonResponse> {
+        return apiService.getAllPokemon(limit, offset)
     }
 
     override suspend fun getPokemonDetail(name: String): Response<PokemonDetailResponse> {
